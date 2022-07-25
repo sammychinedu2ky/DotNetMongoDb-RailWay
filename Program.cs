@@ -11,6 +11,7 @@ builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
 //build application
 builder.Services.AddSingleton<IMongoCollection<Person>>(s =>
 {
+    //retrieve connection string from environment variables
     var client = new MongoClient(s.GetService<IConfiguration>()!["MONGO_URL"]);
     var database = client.GetDatabase("test");
       return database.GetCollection<Person>("people");
