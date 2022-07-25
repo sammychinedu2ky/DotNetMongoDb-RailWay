@@ -26,7 +26,7 @@ app.MapGet("/{name}", async (string name,IMongoCollection<Person> collection) =>
    var result = await collection
    .Find(Builders<Person>.Filter.Eq(x=>x.name,name))
    .Project(Builders<Person>.Projection.Expression(x=>new Person(x.name,x.age)))
-   .FirstOrDefaultAsync();
+   .ToListAsync();
 
     // return 404 if not found
    if(result == null) return Results.NotFound();
