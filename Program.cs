@@ -22,16 +22,24 @@ app.MapGet("/",()=>"Hello world 🥂");
 
 app.MapGet("/{name}", async (string name,IMongoCollection<Person> collection) =>
 {
+    // find user
    var result = await collection
    .Find(Builders<Person>.Filter.Eq(x=>x.name,name))
    .Project(Builders<Person>.Projection.Expression(x=>new Person(x.name,x.age)))
    .FirstOrDefaultAsync();
+
+    // return 404 if not found
    if(result == null) return Results.NotFound();
+   
+   //return result
    return Results.Ok(result);
 });
 app.MapPost("/create", async (Person person, IMongoCollection<Person> collection) =>
 {
+    //crete user
     await collection.InsertOneAsync(new Person(person.name,person.age));
+
+    // return 202
     return Results.Accepted();
 });
 
