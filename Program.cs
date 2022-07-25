@@ -22,7 +22,7 @@ app.MapGet("/",()=>"Hello world 🥂");
 
 app.MapGet("/{name}", async (string name,IMongoCollection<Person> collection) =>
 {
-    // find user
+    // find users
    var result = await collection
    .Find(Builders<Person>.Filter.Eq(x=>x.name,name))
    .Project(Builders<Person>.Projection.Expression(x=>new Person(x.name,x.age)))
